@@ -1,0 +1,129 @@
+body{
+    font-family: cursive;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+.navbar{
+    background-color: white !important;
+    height: 5rem;
+    margin-bottom: 10px;
+}
+
+.fa-regular{
+    font-size: xx-large;
+    color:  rgba(0, 179, 255, 0.896);
+}
+
+.nav-link{
+    color: #222222;
+}
+
+
+
+/* Cards or listings stylings */
+.card-listing{
+    border: none;
+    margin-bottom: 2rem;
+}
+
+.card-img-top{
+    border-radius: 1rem;
+}
+
+.card-body{
+    padding: 0 ;
+}
+
+.card-text {
+    font-weight: 400 !important;
+}
+
+
+/* Card stylings */
+.card-links{
+    text-decoration: none;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+
+
+/* footer stylings */
+.f-icons , .f-info-links, .f-info-brand{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   vertical-align: middle;
+}
+
+.f-icons i {
+    margin-right: 1.3rem;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+
+.f-info{
+    text-align: center;
+    background-color: lightgray;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 7rem;
+}
+
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    margin-right: 1.2rem;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+.add-btn, .edit-btn{
+    background-color: rgba(0, 179, 255, 0.896);
+}
+
+/* show Listing */
+
+.show-img{
+    height:60vh;
+    
+}
+
+.show-btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.show-btns .edit-btn{
+    margin-right: 3rem;
+}
+
+.stars i{
+    font-size: 1.5rem;
+}
+
+ /*Map styling  */
+
+ #map{
+    height: 400px;
+  }

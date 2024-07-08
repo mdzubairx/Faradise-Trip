@@ -1,0 +1,26 @@
+<% layout('/layouts/boilerPlate') %>
+
+
+    <div class="row">
+        <h2 class="col-6 offset-2">SignUp On FaraDiseTrip</h2>
+        <div class="col-6 offset-2">
+            <form action="/signUp" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" placeholder="username" class="form-control" required>
+                </div>
+               
+                <div class="mb-3">
+                    <label for="email" class="form-label" >Email</label>
+                    <input type="email" id="email" class="form-control" name="email" placeholder="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" name="password" placeholder="password" required>
+                </div>
+
+                <button class="btn btn-outline-dark mb-3">SignUp</button>
+            </form>
+            </div>
+    </div>
