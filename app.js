@@ -166,6 +166,6 @@ app.use((err, req , res , next)=>{
     res.status(statusCode).render("error.ejs" , {message});
 })
 
-app.listen(8080, (req, res)=>{
-    console.log("The server is live at 8080");
+app.listen(process.env.PORT || 8080, (req, res)=>{
+    console.log("The server is live at", process.env.PORT || 8080, "- ", `http://localhost:${process.env.PORT || 8080}` );
 });
