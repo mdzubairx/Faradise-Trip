@@ -35,7 +35,35 @@
       <hr>
   </div>
 
-  <div class="col-7 offset-2 mb-3">
+
+<br>
+    <div class="mb-3" style="display: flex; ">
+       <div id="litepicker" class="col-5 offset-2"></div>
+        <div style="display: flex; flex-direction: column; gap: 2rem; justify-content: center;">
+            <div class="mb-3">
+              <h4>Selected Date Range</h4>
+              <p>Check-in: <span id="Check-in">Not Selected</span></p>
+              <p>Check-out: <span id="Check-out">Not Selected</span></p>
+            <button class="btn btn-outline-dark" id="resetDatesBtn">Reset Dates</button>
+            </div>
+
+            <div>
+              <h4>Total Price</h4>
+              <p>&#8377;&nbsp;<span id="totalPrice">0</span></p>
+            </div>
+
+          
+          <button class="btn btn-outline-dark "  id="bookNowBtn">Book Now</button>
+        </div>
+
+
+    </div>
+    
+
+        
+ <br>
+
+  <div >
     <h5>Where You will be</h5>
     <div id="map"></div>
   </div>
@@ -107,5 +135,67 @@
 
 </div>
 
+<script>
+  const listingPrice = <%= ListingData.price %>;
+</script>
 
 <script src="/js/map.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/litepickeropendays/dist/js/main.js"></script>
+<script>
+var picker = new Litepicker({ element: document.getElementById('litepicker'),
+   bookedDays : [ ['2026-07-25', '2026-07-30'], '2026-08-05' ],
+    inlineMode : true, 
+    singleMode : false, 
+    numberOfMonths : 1, 
+    numberOfColumns : 1, 
+    numberOfRows : 1, 
+    format : 'DD-MM-YYYY', 
+    lang : 'en-GB', 
+    minDate : new Date(), 
+    maxDate : new Date().setDate(new Date().getDate() + 90),  
+    autoApply : false,
+    mobileFriendly : true,
+    disallowBookedDaysInRange : true, 
+    onSelect: function(date1, date2) { 
+    console.log("Selected dates:", date1, date2); 
+    document.getElementById('Check-in').textContent = date1 ? date1.format('DD-MM-YYYY') : 'Not Selected';
+    document.getElementById('Check-out').textContent = date2 ? date2.format('DD-MM-YYYY') : 'Not Selected';
+    const dateOne = new Date(date1);
+    const dateTwo = new Date(date2);
+    let noOfDays = dateTwo.getDate() - dateOne.getDate();
+    document.getElementById('totalPrice').textContent = listingPrice * (noOfDays + 1);
+  },
+    onError: function(error) { 
+      console.log("Error:", error); 
+    },
+    });
+
+
+  let resetDatesBtn = document.getElementById('resetDatesBtn');
+  resetDatesBtn.addEventListener('click', function() {
+    picker.clearSelection();
+    document.getElementById('Check-in').textContent = 'Not Selected';
+    document.getElementById('Check-out').textContent = 'Not Selected';
+    document.getElementById('totalPrice').textContent = '0';
+  });
+
+
+   let bookNowBtn =  document.getElementById('bookNowBtn');
+
+   bookNowBtn.addEventListener('click', function() {
+      const startDate = picker.getStartDate();
+      const endDate = picker.getEndDate();
+      if (!startDate || !endDate) {
+        alert("Please select a valid date range before booking.");
+        return;
+      }
+      const bookingStartDate = startDate.format('YYYY-MM-DD');
+      const bookingEndDate = endDate.format('YYYY-MM-DD');
+      
+      console.log("Booking from:", bookingStartDate, "to:", bookingEndDate);
+      console.log("Total Price: ₹" + listingPrice * (endDate.getDate() - startDate.getDate() + 1));
+      // Redirect to the booking route with the selected dates as query parameters
+      // window.location.href = `/listings/<%=ListingData.id%>/book?start=${startDate}&end=${endDate}`;
+    });
+
+</script>

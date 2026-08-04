@@ -127,3 +127,35 @@ body{
  #map{
     height: 400px;
   }
+
+  #litepicker .litepicker {
+    transform: scale(1.3);
+    transform-origin: top left;
+}
+
+#litepicker {
+    overflow: auto;
+    min-height: 420px;
+}
+
+.litepicker .button-cancel{
+     display: none !important;
+}
+
+.litepicker .preview-date-range{
+    display: none !important; 
+}
+
+.litepicker .container__footer{
+    display: flex;
+    justify-content: center;
+}
+
+.litepicker .button-apply{
+    width: 100%;
+}
+
+#totalPrice {
+    font-weight: bold;
+    color: #00b3ff;
+}
