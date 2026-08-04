@@ -136,7 +136,7 @@
 </div>
 
 <script>
-  const listingPrice = <%= ListingData.price %>;
+  const listingPrice = JSON.parse('<%- JSON.stringify(ListingData.price) %>');
 </script>
 
 <script src="/js/map.js"></script>
