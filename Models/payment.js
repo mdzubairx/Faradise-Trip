@@ -23,19 +23,18 @@ const paymentSchema = new Schema({
     paymentMethod: {
         type: String,
         enum: ["card", "upi", "netbanking", "wallet", "paypal"],
-        required: true
     },
-    paymentGateway: {
-        type: String   // e.g. "razorpay", "stripe"
+    razorpayOrderId: {
+        type: String   
     },
-    transactionId: {
+    razorpayPaymentId: {
         type: String,
         unique: true,
-        sparse: true    // allows multiple docs with no transactionId (e.g. failed before gateway call)
+        sparse: true
     },
     status: {
         type: String,
-        enum: ["pending", "success", "failed", "refunded"],
+        enum: ["pending", "success", "failed", "refunded", "authorized", "verification_pending"],
         default: "pending"
     },
     paidAt: {

@@ -31,7 +31,7 @@ const bookingSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "confirmed", "cancelled", "completed"],
+        enum: ["pending", "confirmed", "cancelled", "failed", "verification_pending"],
         default: "pending"
     },
     payment: {
@@ -40,14 +40,6 @@ const bookingSchema = new Schema({
     }
 }, { timestamps: true }); // gives you createdAt & updatedAt automatically
 
-// basic sanity check: endDate must be after startDate
-bookingSchema.pre("validate", function(next) {
-    if (this.startDate && this.endDate && this.endDate <= this.startDate) {
-        next(new Error("endDate must be after startDate"));
-    } else {
-        next();
-    }
-});
 
 // useful for quickly finding all bookings for a listing / user
 bookingSchema.index({ listing: 1, startDate: 1, endDate: 1 });

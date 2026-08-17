@@ -3,6 +3,8 @@
   const MAP_API = "<%=process.env.MAP_API%>";
   console.log(MAP_API);
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <div class="row mt-3">
     <div class="col-8 offset-2">
@@ -37,7 +39,7 @@
 
 
 <br>
-    <div class="mb-3" style="display: flex; ">
+    <div class="mb-3" style="display: flex; " id="booking-section">
        <div id="litepicker" class="col-5 offset-2"></div>
         <div style="display: flex; flex-direction: column; gap: 2rem; justify-content: center;">
             <div class="mb-3">
@@ -47,13 +49,24 @@
             <button class="btn btn-outline-dark" id="resetDatesBtn">Reset Dates</button>
             </div>
 
+
             <div>
-              <h4>Total Price</h4>
-              <p>&#8377;&nbsp;<span id="totalPrice">0</span></p>
+              <h5>Add Guests</h5> 
+              <div class="add-guests-controller">
+                  <i class="fa-regular fa-square-plus" id="add"></i>
+                  <span id="guestsValue"> 1 </span>
+                  <i class="fa-regular fa-square-minus" id="sub"></i>
+              </div>
+            </div>
+
+            <div>
+              <button class="btn btn-outline-success" id="check-price"> Check Price</button>
+              <br><br>
+              <p> Total Price &#8377;&nbsp;<span id="totalPrice">0</span></p>
             </div>
 
           
-          <button class="btn btn-outline-dark "  id="bookNowBtn">Book Now</button>
+          <button class="btn btn-outline-danger "  id="bookNowBtn">Book Now</button>
         </div>
 
 
@@ -142,8 +155,29 @@
 <script src="/js/map.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/litepickeropendays/dist/js/main.js"></script>
 <script>
-var picker = new Litepicker({ element: document.getElementById('litepicker'),
-   bookedDays : [ ['2026-07-25', '2026-07-30'], '2026-08-05' ],
+
+async function initializeBookingPage() { 
+
+
+  async function getBookedDays() {
+  try{
+    //Fetch the booked days of this listed place
+      const bookeddaysResponse = await axios.get('/listings/<%=ListingData.id%>/booked-days');
+      return bookeddaysResponse.data.bookedDaysRanges;
+    
+    }
+    catch(error){
+      console.error(error);
+      alert("Error while fetching booked days for this listing");
+    }
+  }
+
+  let bookedDaysRange = await getBookedDays();
+  console.log(bookedDaysRange);
+
+
+  var picker = new Litepicker({ element: document.getElementById('litepicker'),
+   bookedDays : bookedDaysRange,
     inlineMode : true, 
     singleMode : false, 
     numberOfMonths : 1, 
@@ -152,21 +186,21 @@ var picker = new Litepicker({ element: document.getElementById('litepicker'),
     format : 'DD-MM-YYYY', 
     lang : 'en-GB', 
     minDate : new Date(), 
-    maxDate : new Date().setDate(new Date().getDate() + 90),  
+    maxDate : new Date().setDate(new Date().getDate() + 150),  
     autoApply : false,
     mobileFriendly : true,
     disallowBookedDaysInRange : true, 
     onSelect: function(date1, date2) { 
-    console.log("Selected dates:", date1, date2); 
     document.getElementById('Check-in').textContent = date1 ? date1.format('DD-MM-YYYY') : 'Not Selected';
     document.getElementById('Check-out').textContent = date2 ? date2.format('DD-MM-YYYY') : 'Not Selected';
-    const dateOne = new Date(date1);
-    const dateTwo = new Date(date2);
-    let noOfDays = dateTwo.getDate() - dateOne.getDate();
-    document.getElementById('totalPrice').textContent = listingPrice * (noOfDays + 1);
   },
     onError: function(error) { 
-      console.log("Error:", error); 
+      console.log("Error:", error);
+      if(error == "INVALID_RANGE"){
+        alert(`You have selected some booked dates. Please Select Available dates only. Error - ${error} `);
+      }else {
+        alert(error);
+      }
     },
     });
 
@@ -180,22 +214,306 @@ var picker = new Litepicker({ element: document.getElementById('litepicker'),
   });
 
 
-   let bookNowBtn =  document.getElementById('bookNowBtn');
+  let guestsdiv = document.getElementById('guestsValue'); 
 
-   bookNowBtn.addEventListener('click', function() {
-      const startDate = picker.getStartDate();
-      const endDate = picker.getEndDate();
-      if (!startDate || !endDate) {
+  let addbtn = document.getElementById('add');
+  addbtn.addEventListener('click', function(){
+    if(Number(guestsdiv.innerText) < 10){
+    guestsdiv.innerText = Number(guestsdiv.innerText) + 1;
+    }
+  })
+
+
+  let subbtn = document.getElementById('sub');
+  subbtn.addEventListener('click', function(){
+    if(Number(guestsdiv.innerText)  > 1 ){
+      guestsdiv.innerText = Number(guestsdiv.innerText) - 1;
+    }
+  })
+
+  let checkPriceBtn = document.getElementById('check-price');
+
+  checkPriceBtn.addEventListener('click', async function() {
+    const startDate = picker.getStartDate();
+    const endDate = picker.getEndDate();
+
+    if (!startDate || !endDate) {
         alert("Please select a valid date range before booking.");
         return;
       }
-      const bookingStartDate = startDate.format('YYYY-MM-DD');
-      const bookingEndDate = endDate.format('YYYY-MM-DD');
       
-      console.log("Booking from:", bookingStartDate, "to:", bookingEndDate);
-      console.log("Total Price: ₹" + listingPrice * (endDate.getDate() - startDate.getDate() + 1));
-      // Redirect to the booking route with the selected dates as query parameters
-      // window.location.href = `/listings/<%=ListingData.id%>/book?start=${startDate}&end=${endDate}`;
+
+    const dateOne = new Date(startDate);
+    const dateTwo = new Date(endDate);
+
+    
+    const noOfDays = (dateTwo - dateOne) / (1000 * 60 * 60 * 24);
+    
+
+    let guestsDiv = document.getElementById('guestsValue');
+
+    const guestsCount = Number(guestsDiv.innerText);
+
+    document.getElementById('totalPrice').textContent = listingPrice * (noOfDays + 1) * guestsCount;
+  })
+
+
+
+   let bookNowBtn =  document.getElementById('bookNowBtn');
+
+   bookNowBtn.addEventListener('click', async function() {
+
+    // Prevent multiple clicks
+      if (bookNowBtn.disabled || document.querySelector('.booking-confirmation-card')) {
+          return;
+      }
+
+      bookNowBtn.disabled = true;
+
+      const startDate = picker.getStartDate();
+      const endDate = picker.getEndDate();
+      if (!startDate || !endDate) {
+        bookNowBtn.disabled = false;
+        alert("Please select a valid date range before booking.");
+        return;
+      }
+
+      const date1 = new Date(startDate);
+      const date2 = new Date(endDate);
+      const noOfDays = (date2 - date1) / (1000 * 60 * 60 * 24);
+
+      let guestsDiv = document.getElementById('guestsValue');
+      const guestsCount = Number(guestsDiv.innerText);
+
+    
+
+    try{
+     const response = await axios.post(`/listings/<%=ListingData.id%>/book`, {
+        startDate: date1,
+        endDate: date2,
+        totalPrice : listingPrice * (noOfDays + 1) * guestsCount,
+        guests : guestsCount
+      })
+
+      console.log(response.data);
+
+      const Sdate = new Date(response.data.bookingdetails.startDate);
+      const checkindate = Sdate.toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+      });
+      
+      const Edate = new Date(response.data.bookingdetails.endDate);
+      const checkoutdate = Edate.toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric"
+      });
+
+
+
+      if(!response.data.PaymentRecord?.razorpayOrderId){
+        alert("Razorpay Booking order not created. Please refresh and try again");
+        window.location.href = "/listings";
+        return;
+      }
+
+      const bookingSection = document.getElementById('booking-section');
+      const confirmationDiv = document.createElement("div");
+
+
+      // confirmationDiv.innerHTML = `
+      // <h3><%= ListingData.title %></h3>
+      // <h5>Checkin Date - ${response.data.bookingdetails.startDate}</h5>
+      // <h5>Checkout Date - ${response.data.bookingdetails.endDate}</h5>
+      // <h5>Guests : ${response.data.bookingdetails.guests}</h5>
+      // <h4> Total Amount to be paid : ${response.data.bookingdetails.totalPrice}</h4>
+      // <button id="rzp-button1" class="btn btn-danger">Confirm & Pay</button>
+      // `;
+
+      // confirmationDiv.style.backgroundColor = '#9e9e9e75' 
+
+
+
+      confirmationDiv.innerHTML = `
+        <div class="booking-confirmation-card">
+
+          <div class="booking-confirmation-header">
+            <div>
+              <span class="booking-summary-label">BOOKING SUMMARY</span>
+              <h3>$<%= ListingData.title %></h3>
+            </div>
+
+            <button type="button" class="booking-close-btn" id="closeBookingConfirmation">
+              &times;
+            </button>
+          </div>
+
+          <div class="booking-details">
+
+            <div class="booking-detail-box">
+              <i class="fa-regular fa-calendar-check"></i>
+              <div>
+                <span>CHECK-IN</span>
+                <strong>${checkindate}</strong>
+              </div>
+            </div>
+
+            <div class="booking-detail-box">
+              <i class="fa-regular fa-calendar-xmark"></i>
+              <div>
+                <span>CHECK-OUT</span>
+                <strong>${checkoutdate}</strong>
+              </div>
+            </div>
+
+            <div class="booking-detail-box">
+              <i class="fa-solid fa-user-group"></i>
+              <div>
+                <span>GUESTS</span>
+                <strong>${response.data.bookingdetails.guests} ${
+                  response.data.bookingdetails.guests == 1 ? "Guest" : "Guests"
+                }</strong>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="booking-price-section">
+            <div>
+              <span>Total Amount</span>
+              <small>Including applicable charges</small>
+            </div>
+
+            <strong>
+              &#8377;${Number(response.data.bookingdetails.totalPrice).toLocaleString("en-IN")}
+            </strong>
+          </div>
+
+          <div class="booking-payment-info">
+            <i class="fa-solid fa-lock"></i>
+            <span>Your payment is securely processed by Razorpay.</span>
+          </div>
+
+          <button id="rzp-button1" class="btn confirm-pay-btn">
+            <i class="fa-solid fa-credit-card"></i>
+            Confirm & Pay
+          </button>
+
+        </div>
+      `;      
+
+
+      const closeBookingConfirmation = confirmationDiv.querySelector(
+          '#closeBookingConfirmation'
+      );
+
+      closeBookingConfirmation.addEventListener('click', function () {
+          confirmationDiv.remove();
+          bookNowBtn.disabled = false;
+      });
+
+      bookingSection.after(confirmationDiv);
+
+
+      confirmationDiv.scrollIntoView({ behavior: "smooth", block: "end" });
+
+          var options = {
+        "key": response.data.rk, // Enter the Key ID generated from the Dashboard
+        "amount": response.data.PaymentRecord.amount * 100 , // Amount is in currency subunits.
+        "currency": response.data.PaymentRecord.currency,
+        "name": response.data.faradisetripCompany.name , //your business name
+        "description": response.data.faradisetripCompany.description,
+        // "image": "",
+        "order_id": response.data.PaymentRecord.razorpayOrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": async function (res){
+            // alert(res.razorpay_payment_id);
+            // alert(res.razorpay_order_id);
+            // alert(res.razorpay_signature)
+
+        try {
+            const bookingId = response.data.PaymentRecord.booking;    
+            
+            const paymentverificationResponse = await axios.post(`/verify-payment/booking/${bookingId}`, {
+                razorpay_payment_id :  res.razorpay_payment_id,
+                razorpay_order_id : res.razorpay_order_id,
+                razorpay_signature : res.razorpay_signature,
+              });
+
+              if(paymentverificationResponse.data.status == 'ok'){
+                confirmationDiv.remove();
+                alert("Payment verified successfully. Booking Confirmed");
+                window.location.href = "/listings";
+              }else{
+                confirmationDiv.remove();
+                alert("Payment Verification Failed");
+                window.location.href = "/listings";
+              }
+
+        } catch (error) {
+          console.log("Payment verification Failed", error);
+
+          if(error.response.data.message){
+            alert(error.response.data.message || "Something went wrong.");
+          }
+        }
+
+        },
+        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+            "name": response.data.userDetails.username, //your customer's name
+            "email": response.data.userDetails.email, 
+            // "contact": ""  //Provide the customer's phone number for better conversion rates 
+        },
+        "notes": {
+            "address": response.data.faradisetripCompany.address
+        },
+        "theme": {
+            "color": "#00b3ffe4"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+            alert(`Payment failed-  ${response.error.description} |  Reason - ${response.error.step} | Step - ${response.error.reason}`);
+            // alert(response.error.code);
+            // alert(response.error.description);
+            // alert(response.error.source);
+            // alert(response.error.step);
+            // alert(response.error.reason);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
+            confirmationDiv.remove();
+            bookNowBtn.disabled = false;
     });
+    document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+
+
+    } 
+    catch(error){
+      console.error(error);
+
+      if(error.response){
+        console.log(error.response.data);
+        alert(error.response.data.message || "Booking failed. Please try again");
+      }
+      else if(error.request){
+        alert("Server did not respond. Please try again.");
+      }
+      else {
+        alert("Something went wrong.");
+      }
+      
+      bookNowBtn.disabled = false;
+    }
+
+  });
+
+
+} 
+
+initializeBookingPage();
 
 </script>

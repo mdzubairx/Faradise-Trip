@@ -26,6 +26,8 @@ const { register } = require('module');
 const {savedRedirectPage, isOwner , validateListing , isReviewAuthor} = require('./middleware.js');
 const { index , renderNewListingsForm , createNewListing , showListing , editListingForm , editListingRequest, deleteListing} = require('./controllers/listings.js');
 const { createNewReview , deleteReview } = require('./controllers/reviews.js');
+const { createBooking ,verifyPayments , getBookedDays} = require('./controllers/booking.js');
+const { webhookHandler } = require('./controllers/webhookHandler.js');
 const { renderSignUpForm , signUp , renderLoginForm , login , logout} = require('./controllers/users.js');
 const multer  = require('multer');
 const {storage} = require('./cloudCongig.js');
@@ -47,6 +49,7 @@ async function main(){
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.json());
 app.use(express.urlencoded( {extended: true} ));
 app.use(methodOverride('_method'))
 app.engine("ejs", ejsMate);
@@ -95,9 +98,9 @@ app.use((req ,res , next)=>{
     next();
 })
 
-// app.get("/", (req, res)=>{
-//     res.send("this route is live ")
-// })
+app.get("/", (req, res)=>{
+    res.redirect('/listings');
+})
 
 
 
@@ -146,6 +149,16 @@ app.delete("/listings/:id",isLoggedin, isOwner, wrapAsync(deleteListing ))
 
 
 
+//Bookings API
+app.post("/listings/:id/book", isLoggedin, wrapAsync(createBooking) )
+
+
+app.get("/listings/:id/booked-days", wrapAsync(getBookedDays) );
+
+app.post("/verify-payment/booking/:id", verifyPayments )
+
+
+app.post("/booking-payment/webhook",  webhookHandler)
 
 //reviews Section 
 app.post("/listings/:id/reviews", isLoggedin, createNewReview)

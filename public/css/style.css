@@ -159,3 +159,207 @@ body{
     font-weight: bold;
     color: #00b3ff;
 }
+
+.add-guests-controller {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+
+/* Booking confirmation container */
+.booking-confirmation-card {
+    width: min(520px, 100%);
+    margin: 25px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+}
+
+
+/* Header */
+.booking-confirmation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.booking-summary-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.booking-confirmation-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #222;
+}
+
+
+/* Close button */
+.booking-close-btn {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #777;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.booking-close-btn:hover {
+    color: #222;
+}
+
+
+/* Booking details */
+.booking-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 22px 0;
+}
+
+.booking-detail-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 10px;
+    background: #f8f8f8;
+    border-radius: 10px;
+}
+
+.booking-detail-box i {
+    font-size: 18px;
+    color: #333;
+}
+
+.booking-detail-box span {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: #777;
+    margin-bottom: 3px;
+}
+
+.booking-detail-box strong {
+    display: block;
+    font-size: 13px;
+    color: #222;
+}
+
+
+/* Price section */
+.booking-price-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.booking-price-section span {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+}
+
+.booking-price-section small {
+    display: block;
+    margin-top: 3px;
+    color: #888;
+    font-size: 11px;
+}
+
+.booking-price-section > strong {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
+}
+
+
+/* Razorpay information */
+.booking-payment-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 18px 0;
+    padding: 10px 12px;
+    background: #f6f9f7;
+    border-radius: 8px;
+    color: #555;
+    font-size: 12px;
+}
+
+.booking-payment-info i {
+    color: #198754;
+}
+
+
+/* Confirm & Pay button */
+.confirm-pay-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #212529;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.confirm-pay-btn:hover {
+    background: #000;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.confirm-pay-btn i {
+    margin-right: 7px;
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .booking-confirmation-card {
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    .booking-details {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-detail-box {
+        padding: 12px;
+    }
+
+    .booking-price-section > strong {
+        font-size: 20px;
+    }
+}
+
+
+.litepicker .container__days .day-item.is-booked {
+    text-decoration: line-through;
+}
+
+.litepicker .container__days .day-item.is-locked {
+    text-decoration: line-through;
+}
