@@ -27,6 +27,8 @@ const {savedRedirectPage, isOwner , validateListing , isReviewAuthor} = require(
 const { index , renderNewListingsForm , createNewListing , showListing , editListingForm , editListingRequest, deleteListing} = require('./controllers/listings.js');
 const { createNewReview , deleteReview } = require('./controllers/reviews.js');
 const { createBooking ,verifyPayments , getBookedDays} = require('./controllers/booking.js');
+const { mybookings } = require('./controllers/mybookings.js');
+const { searchListing } = require('./controllers/search.js');
 const { webhookHandler } = require('./controllers/webhookHandler.js');
 const { renderSignUpForm , signUp , renderLoginForm , login , logout} = require('./controllers/users.js');
 const multer  = require('multer');
@@ -148,6 +150,9 @@ app.put("/listings/:id", isLoggedin, isOwner, upload.single('listing[image]'),  
 app.delete("/listings/:id",isLoggedin, isOwner, wrapAsync(deleteListing ))
 
 
+//search API
+app.get("/search-listings", wrapAsync(searchListing));
+
 
 //Bookings API
 app.post("/listings/:id/book", isLoggedin, wrapAsync(createBooking) )
@@ -159,6 +164,10 @@ app.post("/verify-payment/booking/:id", verifyPayments )
 
 
 app.post("/booking-payment/webhook",  webhookHandler)
+
+
+//my bookings
+app.get("/my-bookings", isLoggedin , wrapAsync(mybookings));
 
 //reviews Section 
 app.post("/listings/:id/reviews", isLoggedin, createNewReview)

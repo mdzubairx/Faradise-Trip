@@ -1,0 +1,815 @@
+<% layout('/layouts/boilerPlate') %>
+
+<style>
+    .my-bookings-page {
+        padding: 35px 0 60px;
+    }
+
+    .bookings-header {
+        margin-bottom: 35px;
+    }
+
+    .bookings-header h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #222;
+    }
+
+    .bookings-header p {
+        color: #777;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    /* Empty State */
+    .empty-bookings {
+        text-align: center;
+        padding: 80px 20px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 20px;
+    }
+
+    .empty-bookings i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-bookings h3 {
+        font-weight: 700;
+        color: #333;
+    }
+
+    .empty-bookings p {
+        color: #777;
+    }
+
+    /* Booking Card */
+    .booking-card {
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 28px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        transition: all 0.25s ease;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+    }
+
+    /* Top section */
+    .booking-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 22px;
+        border-bottom: 1px solid #eee;
+        background: #fafafa;
+    }
+
+    .booking-reference {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .booking-reference .small-label {
+        font-size: 0.72rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 600;
+    }
+
+    .booking-reference .booking-id {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Status badges */
+    .status-badge {
+        padding: 7px 14px;
+        border-radius: 50px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .status-confirmed {
+        background: #e8f8ee;
+        color: #18864b;
+    }
+
+    .status-pending {
+        background: #fff5db;
+        color: #a56b00;
+    }
+
+    .status-cancelled {
+        background: #fdeaea;
+        color: #c62828;
+    }
+
+    .status-completed {
+        background: #e9eefc;
+        color: #4056a1;
+    }
+
+    /* Main booking content */
+    .booking-main {
+        padding: 22px;
+    }
+
+    .listing-image-wrapper {
+        width: 100%;
+        height: 210px;
+        border-radius: 15px;
+        overflow: hidden;
+        background: #f1f1f1;
+    }
+
+    .listing-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.35s ease;
+    }
+
+    .booking-card:hover .listing-image-wrapper img {
+        transform: scale(1.03);
+    }
+
+    .listing-info {
+        padding-left: 4px;
+    }
+
+    .listing-info h2 {
+        font-size: 1.55rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #222;
+    }
+
+    .listing-location {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #666;
+        font-size: 0.92rem;
+        margin-bottom: 14px;
+    }
+
+    .listing-location i {
+        color: #e63946;
+    }
+
+    .listing-description {
+        color: #777;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+
+    .price-per-night {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #222;
+    }
+
+    .price-per-night span {
+        font-weight: 400;
+        color: #777;
+        font-size: 0.85rem;
+    }
+
+    /* Booking details */
+    .booking-details {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .detail-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        background: #fafafa;
+        border: 1px solid #eee;
+        border-radius: 13px;
+        height: 100%;
+    }
+
+    .detail-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border-radius: 10px;
+        color: #444;
+        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
+    }
+
+    .detail-content small {
+        display: block;
+        color: #888;
+        font-size: 0.73rem;
+        margin-bottom: 3px;
+    }
+
+    .detail-content strong {
+        font-size: 0.9rem;
+        color: #333;
+    }
+
+    /* Payment */
+    .payment-section {
+        margin-top: 25px;
+        background: #f8fbf9;
+        border: 1px solid #dfeee4;
+        border-radius: 15px;
+        padding: 18px;
+    }
+
+    .payment-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .payment-header h5 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .payment-success {
+        color: #18864b;
+        background: #e5f7eb;
+        padding: 5px 11px;
+        border-radius: 50px;
+        font-size: 0.74rem;
+        font-weight: 700;
+    }
+
+    .payment-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .payment-item small {
+        display: block;
+        color: #888;
+        font-size: 0.72rem;
+        margin-bottom: 4px;
+    }
+
+    .payment-item strong {
+        font-size: 0.88rem;
+        color: #333;
+    }
+
+    /* Total */
+    .total-section {
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px dashed #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .total-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .total-amount {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #222;
+    }
+
+    /* Meta information */
+    .booking-meta {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        color: #888;
+        font-size: 0.75rem;
+    }
+
+    .booking-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .property-id {
+        word-break: break-all;
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+
+        .my-bookings-page {
+            padding-top: 25px;
+        }
+
+        .bookings-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .booking-top {
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .booking-main {
+            padding: 17px;
+        }
+
+        .listing-image-wrapper {
+            height: 190px;
+            margin-bottom: 20px;
+        }
+
+        .listing-info {
+            padding-left: 0;
+        }
+
+        .listing-info h2 {
+            font-size: 1.3rem;
+        }
+
+        .payment-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .total-section {
+            align-items: flex-end;
+        }
+
+        .total-amount {
+            font-size: 1.25rem;
+        }
+    }
+</style>
+
+
+<div class="my-bookings-page">
+
+    <!-- PAGE HEADER -->
+    <div class="bookings-header">
+        <h1>My Bookings</h1>
+        <p>View and manage all your stays in one place.</p>
+    </div>
+
+
+    <% if (!userBookings || userBookings.length === 0) { %>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-bookings">
+            <i class="fa-regular fa-calendar-xmark"></i>
+
+            <h3>No bookings yet</h3>
+
+            <p>
+                You haven't booked any stays yet.
+                Start exploring amazing places for your next trip.
+            </p>
+
+            <a href="/listings" class="btn btn-dark mt-3 px-4 py-2">
+                Explore Places
+            </a>
+        </div>
+
+    <% } else { %>
+
+
+        <% userBookings.forEach((booking) => { %>
+
+            <div class="booking-card">
+
+                <!-- BOOKING TOP -->
+                <div class="booking-top">
+
+                    <div class="booking-reference">
+                        <span class="small-label">Booking ID</span>
+
+                        <span class="booking-id">
+                           #<%= booking._id %>
+                        </span>
+                    </div>
+
+
+                    <%
+                        let statusClass = "status-" + booking.status.toLowerCase();
+                    %>
+
+                    <span class="status-badge <%= statusClass %>">
+                        <i class="fa-solid fa-circle-check me-1"></i>
+                        <%= booking.status %>
+                    </span>
+
+                </div>
+
+
+                <!-- MAIN CONTENT -->
+                <div class="booking-main">
+
+                    <div class="row g-4 align-items-center">
+
+                        <!-- LISTING IMAGE -->
+                        <div class="col-md-4">
+
+                            <div class="listing-image-wrapper">
+
+                                <% if (booking.listing && booking.listing.image && booking.listing.image.url) { %>
+
+                                    <img
+                                        src="<%= booking.listing.image.url %>"
+                                        alt="<%= booking.listing.title %>"
+                                    >
+
+                                <% } else { %>
+
+                                    <img
+                                        src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&q=80"
+                                        alt="Property"
+                                    >
+
+                                <% } %>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LISTING INFORMATION -->
+                        <div class="col-md-8">
+
+                            <div class="listing-info">
+
+                                <h2>
+                                    <%= booking.listing.title %>
+                                </h2>
+
+                                <div class="listing-location">
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    <span>
+                                        <%= booking.listing.location %>,
+                                        <%= booking.listing.country %>
+                                    </span>
+
+                                </div>
+
+
+                                <p class="listing-description">
+
+                                    <%= booking.listing.description %>
+
+                                </p>
+
+
+                                <div class="price-per-night">
+
+                                    ₹<%= booking.listing.price.toLocaleString("en-IN") %>
+
+                                    <span>/ night</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOOKING DETAILS -->
+                    <div class="booking-details">
+
+                        <div class="row g-3">
+
+                            <!-- CHECK IN -->
+                            <div class="col-md-6">
+
+                                <div class="detail-box">
+
+                                    <div class="detail-icon">
+                                        <i class="fa-regular fa-calendar-check"></i>
+                                    </div>
+
+                                    <div class="detail-content">
+
+                                        <small>Check-in</small>
+
+                                        <strong class="date-value">
+                                            <%= booking.startDate %>
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CHECK OUT -->
+                            <div class="col-md-6">
+
+                                <div class="detail-box">
+
+                                    <div class="detail-icon">
+                                        <i class="fa-regular fa-calendar-xmark"></i>
+                                    </div>
+
+                                    <div class="detail-content">
+
+                                        <small>Check-out</small>
+
+                                        <strong class="date-value">
+                                            <%= booking.endDate %>
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- GUESTS -->
+                            <div class="col-md-6">
+
+                                <div class="detail-box">
+
+                                    <div class="detail-icon">
+                                        <i class="fa-solid fa-user-group"></i>
+                                    </div>
+
+                                    <div class="detail-content">
+
+                                        <small>Guests</small>
+
+                                        <strong>
+                                            <%= booking.guests %>
+                                            <%= booking.guests === 1 ? "Guest" : "Guests" %>
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PROPERTY ID -->
+                            <div class="col-md-6">
+
+                                <div class="detail-box">
+
+                                    <div class="detail-icon">
+                                        <i class="fa-solid fa-house"></i>
+                                    </div>
+
+                                    <div class="detail-content">
+
+                                        <small>Property ID</small>
+
+                                        <strong class="property-id">
+                                            <%= booking.listing._id %>
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT SECTION -->
+                    <% if (booking.payment) { %>
+
+                        <div class="payment-section">
+
+                            <div class="payment-header">
+
+                                <h5>
+                                    <i class="fa-solid fa-credit-card me-2"></i>
+                                    Payment Information
+                                </h5>
+
+                                <% if (booking.payment.status === "success") { %>
+
+                                    <span class="payment-success">
+                                        <i class="fa-solid fa-check me-1"></i>
+                                        Payment Successful
+                                    </span>
+
+                                <% } else { %>
+
+                                    <span class="payment-success">
+                                        <%= booking.payment.status %>
+                                    </span>
+
+                                <% } %>
+
+                            </div>
+
+
+                            <div class="payment-grid">
+
+                                <!-- PAYMENT ID -->
+                                <div class="payment-item">
+
+                                    <small>Payment ID</small>
+
+                                    <strong>
+                                        <%= booking.payment._id %>
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- PAYMENT METHOD -->
+                                <div class="payment-item">
+
+                                    <small>Payment Method</small>
+
+                                    <strong>
+                                        <%= booking.payment.paymentMethod %>
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- PAID AMOUNT -->
+                                <div class="payment-item">
+
+                                    <small>Paid Amount</small>
+
+                                    <strong>
+                                        <%= booking.payment.currency %>
+                                        <%= booking.payment.amount.toLocaleString("en-IN") %>
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <% } %>
+
+
+                    <!-- TOTAL PRICE -->
+                    <div class="total-section">
+
+                        <div>
+
+                            <div class="total-label">
+                                Total Booking Amount
+                            </div>
+
+                            <div class="text-muted small mt-1">
+                                <%= booking.guests %>
+                                <%= booking.guests === 1 ? "guest" : "guests" %>
+                            </div>
+
+                        </div>
+
+
+                        <div class="total-amount">
+
+                            ₹<%= booking.totalPrice.toLocaleString("en-IN") %>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- META -->
+                    <div class="booking-meta">
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+
+                            Booked on
+
+                            <strong>
+                                <%= booking.createdAt %>
+                            </strong>
+                        </span>
+
+
+                        <span>
+                            <i class="fa-solid fa-rotate"></i>
+
+                            Last updated
+
+                            <strong>
+                                <%= booking.updatedAt %>
+                            </strong>
+                        </span>
+
+
+                        <span>
+                            <i class="fa-solid fa-id-card"></i>
+
+                            User ID:
+
+                            <strong>
+                                <%= booking.user %>
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    <% } %>
+
+</div>
+
+
+<script>
+
+    /*
+     * Convert MongoDB ISO date into a readable Indian date.
+     *
+     * Example:
+     * 2026-08-14T18:30:00.000Z
+     *
+     * becomes:
+     * 15 Aug 2026, 12:00 AM
+     */
+
+    document.querySelectorAll(".date-value").forEach(element => {
+
+        const rawDate = element.textContent.trim();
+
+        const date = new Date(rawDate);
+
+        if (!isNaN(date.getTime())) {
+
+            element.textContent = date.toLocaleString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+        }
+
+    });
+
+
+    /*
+     * Convert createdAt / updatedAt timestamps.
+     */
+
+    document.querySelectorAll(".booking-meta strong").forEach(element => {
+
+        const rawDate = element.textContent.trim();
+
+        const date = new Date(rawDate);
+
+        if (!isNaN(date.getTime())) {
+
+            element.textContent = date.toLocaleString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+        }
+
+    });
+
+</script>

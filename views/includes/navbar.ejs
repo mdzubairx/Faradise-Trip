@@ -21,7 +21,8 @@
 
 .search-bar{
   border-radius: 25px;
-  padding: 0.5rem 3rem 0.5rem 3rem;
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  width: 22rem;
 }
 
 </style>
@@ -38,14 +39,35 @@
         </div>
 
         <div class="navbar-nav  ms-auto">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2 search-bar" type="search" placeholder="Search destinations" >
-            <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-          </form>
+            <input class="form-control me-2 search-bar" id="searchbarfield" type="search" placeholder="Search destinations, Title or Country " >
+            <button class="btn search-btn" id="SearchBarbtn" type="button"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+
+            <!-- Search Results -->
+            <div id="searchResultsModal" class="search-results-modal">
+
+                <div class="search-results-header">
+                    <h6>Search Results</h6>
+                    <button id="closeSearchResults">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div id="searchResultsContainer">
+                    <!-- Results will be inserted here by JavaScript -->
+                </div>
+
+            </div>
         </div>
 
-        <div class="navbar-nav  ms-auto">
+        <div class="navbar-nav  ms-auto" style="align-items: center;">
+          <% if (currUser) { %>
+          <a href="/my-bookings" class="nav-link btn btn-light mx-2"> <i class="fa-solid fa-bed"></i> &nbsp; <b> My Bookings</b></a>
+          <% } %>
+
+          <a href="/my-wishlists" class="nav-link btn btn-light mx-4" > <i class="fa-solid fa-heart" style="color: #da1249;"></i> <b>Wishlists</b> </a>
+
           <a class="nav-link btn btn-light mx-2" href="/listings/new" >List Place</a>
+          
           <% if (!currUser) {  %>
              <a class="nav-link btn btn-light " aria-current="page"  href="/signUp"><b>Signup</b></a>
              <a class="nav-link btn btn-light mx-2" href="/login"><b>Login</b></a>
@@ -59,3 +81,152 @@
       </div>
     </div>
   </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
+
+<script>
+
+try {
+
+    let searchbarbtn = document.getElementById("SearchBarbtn");
+    let searchbarfield = document.getElementById("searchbarfield");
+
+    let searchResultsModal = document.getElementById("searchResultsModal");
+    let searchResultsContainer = document.getElementById("searchResultsContainer");
+    let closeSearchResults = document.getElementById("closeSearchResults");
+
+    searchbarbtn.addEventListener("click", async () => {
+
+        let queryvalue = searchbarfield.value.trim();
+
+        if (!queryvalue) {
+            return;
+        }
+
+
+        // Show modal
+        searchResultsModal.style.display = "block";
+
+
+        // Show loading
+        searchResultsContainer.innerHTML = `
+            <div class="search-loading">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Searching...
+            </div>
+        `;
+
+
+        try {
+
+            const searchresponse =
+                await axios.get(`/search-listings?q=${encodeURIComponent(queryvalue)}`);
+
+
+            const searchresults = searchresponse.data.searchresults;
+
+
+            console.log(searchresults);
+
+
+            // No results
+            if (!searchresults || searchresults.length === 0) {
+
+                searchResultsContainer.innerHTML = `
+                    <div class="search-no-result">
+                        <i class="fa-solid fa-location-dot mb-2"></i>
+                        <p class="mb-0">
+                            No listings found.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            // Clear previous results
+            searchResultsContainer.innerHTML = "";
+
+
+            // Create result cards
+            searchresults.forEach(listing => {
+
+                let resultCard = document.createElement("div");
+
+                resultCard.classList.add("search-result-card");
+
+
+                resultCard.innerHTML = `
+
+                    <img
+                        src="${listing.image.url}"
+                        alt="${listing.title}"
+                    >
+
+                    <div class="search-result-content">
+
+                        <div class="search-result-title">
+                            ${listing.title}
+                        </div>
+
+                        <div class="search-result-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            ${listing.location}, ${listing.country}
+                        </div>
+
+                        <div class="search-result-price">
+                            ₹${listing.price} / night
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                // Open listing when clicked
+                resultCard.addEventListener("click", () => {
+
+                    window.location.href =
+                        `/listings/${listing._id}`;
+
+                });
+
+
+                searchResultsContainer.appendChild(resultCard);
+
+            });
+
+        } catch (error) {
+
+            console.log("Search error:", error);
+
+            searchResultsContainer.innerHTML = `
+                <div class="search-no-result">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <p class="mb-0">
+                        Something went wrong. Please try again.
+                    </p>
+                </div>
+            `;
+
+        }
+
+    });
+
+
+    // Close search results
+    closeSearchResults.addEventListener("click", () => {
+
+        searchResultsModal.style.display = "none";
+
+    });
+
+
+} catch (error) {
+
+    console.log("error", error);
+
+}
+
+  </script>
