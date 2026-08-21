@@ -122,11 +122,6 @@ body{
     font-size: 1.5rem;
 }
 
- /*Map styling  */
-
- #map{
-    height: 400px;
-  }
 
   #litepicker .litepicker {
     transform: scale(1.3);

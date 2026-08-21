@@ -1,8 +1,4 @@
 <% layout('/layouts/boilerPlate') %>
-<script>
-  const MAP_API = "<%=process.env.MAP_API%>";
-  console.log(MAP_API);
-</script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -78,7 +74,8 @@
 
   <div >
     <h5>Where You will be</h5>
-    <div id="map"></div>
+
+    
   </div>
 
 <!-- leave a review -->
@@ -152,7 +149,6 @@
   const listingPrice = JSON.parse('<%- JSON.stringify(ListingData.price) %>');
 </script>
 
-<script src="/js/map.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/litepickeropendays/dist/js/main.js"></script>
 <script>
 
