@@ -38,7 +38,7 @@ const upload = multer({ storage })
 
 
 // const MongooseConnect = "mongodb://127.0.0.1:27017/faradisetrip";
-const MongoDbCloudURL = "mongodb+srv://zubair01rke:Rz8GO7xer9oiWuUv@cluster0.9rfxzdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const MongoDbCloudURL = process.env.MongoDbCloudURL;
 
 main().then((res)=>{
     console.log("The connection to database is formed");
