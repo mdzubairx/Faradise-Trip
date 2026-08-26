@@ -459,8 +459,50 @@ async function initializeBookingPage() {
 
               if(paymentverificationResponse.data.status == 'ok'){
                 confirmationDiv.remove();
-                alert("Payment verified successfully. Booking Confirmed");
-                window.location.href = "/listings";
+                alert("Payment verified successfully. Booking Confirmed!");
+                
+                // Show a premium glassmorphism loading overlay during the delay
+                const loadingOverlay = document.createElement("div");
+                loadingOverlay.innerHTML = `
+                  <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(255, 255, 255, 0.75);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                  ">
+                    <div style="
+                      width: 50px;
+                      height: 50px;
+                      border: 5px solid rgba(0, 179, 255, 0.15);
+                      border-top: 5px solid #da1249;
+                      border-radius: 50%;
+                      animation: spin 1s linear infinite;
+                      margin-bottom: 20px;
+                    "></div>
+                    <h4 style="color: #222; margin: 0; font-weight: 600; font-family: system-ui, -apple-system, sans-serif;">Finalizing your reservation...</h4>
+                    <p style="color: #666; margin: 8px 0 0 0; font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">Redirecting you to your bookings dashboard.</p>
+                    <style>
+                      @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                      }
+                    </style>
+                  </div>
+                `;
+                document.body.appendChild(loadingOverlay);
+
+                setTimeout(() => {
+                  window.location.href = "/my-bookings";
+                }, 2500);
               }else{
                 confirmationDiv.remove();
                 alert("Payment Verification Failed");

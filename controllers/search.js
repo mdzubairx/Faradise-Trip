@@ -17,7 +17,8 @@ module.exports.searchListing = async (req , res )=>{
             {title : searchregex},
             {description : searchregex},
             {location : searchregex},
-            {country : searchregex}
+            {country : searchregex},
+            {category : searchregex}
         ]
     })
 

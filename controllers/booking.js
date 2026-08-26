@@ -41,7 +41,8 @@ try {
         user : userId,
         startDate : startDate,
         endDate : endDate,
-        status : "pending"
+        status : "pending",
+        guests : guests,
     })
 
     if(checkPendingbookingForUser.length > 0 ){

@@ -68,10 +68,10 @@ module.exports.webhookHandler = async (req, res)=>{
 
     
     //Check which event it is and process it accordingly
-    processWebhookEvent(webhookBody);
+    await processWebhookEvent(webhookBody);
 
     //mark event processed
-    markEventProcessed(RazorPayEventId);
+    await markEventProcessed(RazorPayEventId);
 
     return res.status(200).json({ success : "true", message : "webhook received and processed"});
     }
@@ -90,15 +90,15 @@ module.exports.webhookHandler = async (req, res)=>{
 
     switch (event){
         case "payment.authorized" : 
-        handlePaymentAuthorized(webhookBody);
+        await handlePaymentAuthorized(webhookBody);
         break; 
 
         case "payment.captured" : 
-        handlePaymentCaptured(webhookBody);
+        await handlePaymentCaptured(webhookBody);
         break;
 
         case "payment.failed" : 
-        handlePaymentFailed(webhookBody);
+        await handlePaymentFailed(webhookBody);
         break;
 
         default : 
@@ -109,16 +109,14 @@ module.exports.webhookHandler = async (req, res)=>{
 
 //update the tables with status as payment authorized 
 async function handlePaymentAuthorized(webhookBody){
-   const paymentDetails = await Payment.find({
+   const paymentRecord = await Payment.findOne({
     razorpayOrderId : webhookBody.payload.payment.entity.order_id
-   })
+   });
 
-   if(!paymentDetails){
-    console.log("Payment record does not exists", paymentDetails);
+   if(!paymentRecord){
+    console.log("Payment record does not exist for order ID:", webhookBody.payload.payment.entity.order_id);
     return;
    }
-
-   const paymentRecord = paymentDetails[0];
 
    if(paymentRecord.status == "success"){
     console.log("Payment webhook already captured" , paymentRecord);    
@@ -139,16 +137,14 @@ async function handlePaymentAuthorized(webhookBody){
 
 //update the booking and payment table to completed
 async function handlePaymentCaptured(webhookBody){
-     const paymentDetails = await Payment.find({
+   const paymentRecord = await Payment.findOne({
     razorpayOrderId : webhookBody.payload.payment.entity.order_id
-   })
+   });
 
-   if(!paymentDetails){
-    console.log("Payment record does not exists", paymentDetails);
+   if(!paymentRecord){
+    console.log("Payment record does not exist for order ID:", webhookBody.payload.payment.entity.order_id);
     return;
    }
-
-    const paymentRecord = paymentDetails[0];
 
     if(paymentRecord.status == "authorized"){
         console.log("Payment already authorized and now capturing it " );
@@ -187,18 +183,14 @@ async function handlePaymentCaptured(webhookBody){
 
 //update the booking and payment table to failed
 async function handlePaymentFailed(webhookBody){
-
-    const paymentDetails = await Payment.find({
+   const paymentRecord = await Payment.findOne({
     razorpayOrderId : webhookBody.payload.payment.entity.order_id
-   })
+   });
 
-   if(!paymentDetails){
-    console.log("Payment record does not exists", paymentDetails);
+   if(!paymentRecord){
+    console.log("Payment record does not exist for order ID:", webhookBody.payload.payment.entity.order_id);
     return;
    }
-
-
-    const paymentRecord = paymentDetails[0];
 
    await Payment.findByIdAndUpdate(paymentRecord.id , {
     ...(paymentRecord.paymentMethod? {} : 

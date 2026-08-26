@@ -75,8 +75,6 @@ module.exports.userAccountdetails = async(req, res, err)=>{
 
 
 
-    console.log("users account data ", { userdata , usersListingsData , userReviewsData});
-    
 
     return res.render("Users/userAccount.ejs", { userdata , usersListingsData , userReviewsData});
 }

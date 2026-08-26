@@ -162,7 +162,7 @@ app.post("/listings/:id/book", isLoggedin, wrapAsync(createBooking) )
 
 app.get("/listings/:id/booked-days", wrapAsync(getBookedDays) );
 
-app.post("/verify-payment/booking/:id", verifyPayments )
+app.post("/verify-payment/booking/:id", isLoggedin, verifyPayments )
 
 
 app.post("/booking-payment/webhook",  webhookHandler)
