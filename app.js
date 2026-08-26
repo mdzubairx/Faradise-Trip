@@ -30,7 +30,7 @@ const { createBooking ,verifyPayments , getBookedDays} = require('./controllers/
 const { mybookings } = require('./controllers/mybookings.js');
 const { searchListing } = require('./controllers/search.js');
 const { webhookHandler } = require('./controllers/webhookHandler.js');
-const { renderSignUpForm , signUp , renderLoginForm , login , logout} = require('./controllers/users.js');
+const { renderSignUpForm , signUp , renderLoginForm , login , logout, userAccountdetails} = require('./controllers/users.js');
 const multer  = require('multer');
 const {storage} = require('./cloudCongig.js');
 const upload = multer({ storage })
@@ -120,6 +120,7 @@ app.post("/login",savedRedirectPage, passport.authenticate('local',
 app.get("/logout", logout)
 
 
+app.get("/user/account", isLoggedin, wrapAsync(userAccountdetails));
 
 
 

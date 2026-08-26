@@ -8,13 +8,14 @@ module.exports.index =   async(req, res)=>{
 
 
  module.exports.renderNewListingsForm = (req, res)=>{
-    res.render("listing/newListing.ejs");
+    res.render("listing/newListing.ejs", { mapApiKey: process.env.MAP_API });
 }
 
 module.exports.createNewListing = async (req, res)=>{              
     let url = req.file.path;
+    let {longitude , latitude } = req.body.geometry;
     let filename = req.file.filename;
-    let newList = new Listing(req.body.listing);
+    let newList = new Listing({...(req.body.listing), geometry : { type: "Point", coordinates: [longitude , latitude] }});
     newList.owner = req.user._id;
     newList.image = { url , filename};
 
@@ -42,24 +43,27 @@ module.exports.showListing = async(req, res)=>{
         req.flash("error", "Listing you requested Does not Exist ");
         res.redirect("/listings");    
     }
-    res.render("listing/show.ejs", {ListingData});
+    
+    res.render("listing/show.ejs", { ListingData, mapApiKey: process.env.MAP_API });
 }
 
 module.exports.editListingForm = async (req, res)=>{
     let {id} = req.params;
     let prevListing = await Listing.findById(id);
-    res.render("listing/edit.ejs", {prevListing} )
+    res.render("listing/edit.ejs", {prevListing, mapApiKey: process.env.MAP_API} )
 };
 
 
 module.exports.editListingRequest = async (req, res)=>{    
     let {id} = req.params;
     let updatedvalues = req.body.listing;
-    let url = req.file.path;
-    let filename = req.file.filename;
-    let NewListing =  await Listing.findByIdAndUpdate(id, updatedvalues, {new: true});
+    let {longitude , latitude } = req.body.geometry;
+    // let url = req.file.path;
+    // let filename = req.file.filename;
+    let NewListing =  await Listing.findByIdAndUpdate(id, {...(updatedvalues), geometry : { type: "Point", coordinates: [longitude , latitude] } }, {new: true});
     if(typeof req.file !== "undefined"){
-        NewListing.image = {url , filename};
+        NewListing.image.url = req.file.path;
+        NewListing.image.filename = req.file.filename;
         NewListing.save(); 
     }
     req.flash("success", "Listing Edited sucessfully!!");

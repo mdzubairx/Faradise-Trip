@@ -1,4 +1,6 @@
 const User = require('../Models/user.js');
+const Listing = require('../Models/listing.js');
+const Review = require('../Models/review.js');
 
 module.exports.renderSignUpForm = (req, res)=>{
     res.render("Users/signUp.ejs");
@@ -46,4 +48,35 @@ module.exports.logout = (req, res, err)=>{
         req.flash("success", "You are now logged Out")
         res.redirect("/listings");
     })
+}
+
+
+module.exports.userAccountdetails = async(req, res, err)=>{
+    let userId = req.user._id;
+    if(!userId){
+        return next(err);
+    }
+
+    let userdata = await User.findById(userId);
+    
+
+    if(!userdata){
+        return next(err);
+    }
+    
+    
+    let usersListingsData = await Listing.find({
+            owner : userId
+    })
+
+    let userReviewsData = await Review.find({
+        author : userId
+    })
+
+
+
+    console.log("users account data ", { userdata , usersListingsData , userReviewsData});
+    
+
+    return res.render("Users/userAccount.ejs", { userdata , usersListingsData , userReviewsData});
 }

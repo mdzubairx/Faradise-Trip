@@ -64,7 +64,7 @@
           <a href="/my-bookings" class="nav-link btn btn-light mx-2"> <i class="fa-solid fa-bed"></i> &nbsp; <b> My Bookings</b></a>
           <% } %>
 
-          <a href="/my-wishlists" class="nav-link btn btn-light mx-4" > <i class="fa-solid fa-heart" style="color: #da1249;"></i> <b>Wishlists</b> </a>
+          <a href="/user/wishlists" class="nav-link btn btn-light mx-4" > <i class="fa-solid fa-heart" style="color: #da1249;"></i> <b>Wishlists</b> </a>
 
           <a class="nav-link btn btn-light mx-2" href="/listings/new" >List Place</a>
           
@@ -74,6 +74,7 @@
           <% } %>
          
           <% if (currUser) { %>
+            <a class="nav-link btn btn-light mx-2" href="/user/account"> <i class="fa-regular fa-circle-user"></i></a>
             <a class="nav-link btn btn-light mx-2" href="/logout" ><b>LogOut</b></a>
             <% } %>
         </div>

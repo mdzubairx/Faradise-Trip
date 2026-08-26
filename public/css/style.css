@@ -15,7 +15,7 @@ body{
     margin-bottom: 10px;
 }
 
-.fa-regular{
+.fa-regular.fa-paper-plane{
     font-size: xx-large;
     color:  rgba(0, 179, 255, 0.896);
 }
@@ -474,4 +474,8 @@ body{
 .search-loading {
   padding: 30px 20px;
   text-align: center;
+}
+
+.fa-regular.fa-circle-user{
+    font-size: x-large;
 }

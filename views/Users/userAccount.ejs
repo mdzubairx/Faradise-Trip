@@ -1,0 +1,325 @@
+<% layout('/layouts/boilerPlate') %>
+
+<div class="container py-5">
+
+  <!-- Page Heading -->
+<div class="mb-5">
+
+    <h1 class="display-6 fw-bold mb-2">
+        User Account Details
+    </h1>
+
+    <p class="text-muted mb-0">
+        View profile information, listings, and reviews.
+    </p>
+
+</div>
+
+    <!-- ================= USER PROFILE ================= -->
+
+    <div class="mb-5">
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="row align-items-center">
+
+                    <!-- Avatar -->
+                    <div class="col-auto">
+                        <div
+                            class="rounded-circle bg-dark text-white
+                                   d-flex align-items-center justify-content-center"
+                            style="width: 90px; height: 90px;"
+                        >
+                            <i class="fa-solid fa-user fa-2x"></i>
+                        </div>
+                    </div>
+
+                    <!-- User Details -->
+                    <div class="col">
+
+                        <h2 class="mb-2">
+                            <%= userdata.username %>
+                        </h2>
+
+                        <p class="text-muted mb-2">
+                            <i class="fa-solid fa-envelope me-2"></i>
+                            <%= userdata.email %>
+                        </p>
+
+                        <div class="d-flex gap-2">
+
+                            <span class="badge text-bg-light border">
+                                <i class="fa-solid fa-house me-1"></i>
+                                <%= usersListingsData.length %> Listings
+                            </span>
+
+                            <span class="badge text-bg-light border">
+                                <i class="fa-solid fa-star me-1"></i>
+                                <%= userReviewsData.length %> Reviews
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ================= LISTINGS ================= -->
+
+    <section class="mb-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h3 class="mb-0">
+                <i class="fa-solid fa-house me-2"></i>
+                Listings by <%= userdata.username %>
+            </h3>
+
+            <span class="text-muted">
+                <%= usersListingsData.length %> listings
+            </span>
+
+        </div>
+
+
+        <% if (usersListingsData.length === 0) { %>
+
+            <div class="text-center py-5">
+
+                <i class="fa-regular fa-folder-open fa-3x text-muted mb-3"></i>
+
+                <h5>No Listings Yet</h5>
+
+                <p class="text-muted">
+                    This user hasn't created any listings.
+                </p>
+
+            </div>
+
+        <% } else { %>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+                <% usersListingsData.forEach(listing => { %>
+
+                    <div class="col">
+
+                        <div class="card h-100 border-0 shadow-sm listing-card">
+
+                            <!-- Image -->
+
+                            <% if (listing.image && listing.image.url) { %>
+
+                                <img
+                                    src="<%= listing.image.url %>"
+                                    class="card-img-top"
+                                    alt="<%= listing.title %>"
+                                    style="
+                                        height: 220px;
+                                        object-fit: cover;
+                                    "
+                                >
+
+                            <% } else { %>
+
+                                <div
+                                    class="bg-light d-flex align-items-center
+                                           justify-content-center"
+                                    style="height: 220px;"
+                                >
+                                    <i class="fa-regular fa-image fa-3x text-muted"></i>
+                                </div>
+
+                            <% } %>
+
+
+                            <!-- Details -->
+
+                            <div class="card-body d-flex flex-column">
+
+                                <h5 class="card-title mb-2">
+                                    <%= listing.title %>
+                                </h5>
+
+
+                                <p class="text-muted small mb-2">
+
+                                    <i class="fa-solid fa-location-dot me-1"></i>
+
+                                    <%= listing.location %>,
+                                    <%= listing.country %>
+
+                                </p>
+
+
+                                <p class="card-text text-muted">
+
+                                    <%= listing.description %>
+
+                                </p>
+
+
+                                <div
+                                    class="mt-auto pt-3
+                                           d-flex justify-content-between
+                                           align-items-center"
+                                >
+
+                                    <div>
+                                        <strong>
+                                            $<%= listing.price.toLocaleString() %>
+                                        </strong>
+
+                                        <span class="text-muted small">
+                                            / night
+                                        </span>
+                                    </div>
+
+
+                                    <a
+                                        href="/listings/<%= listing._id %>"
+                                        class="btn btn-dark btn-sm"
+                                    >
+                                        View
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </section>
+
+
+    <!-- ================= REVIEWS ================= -->
+
+    <section class="mb-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h3 class="mb-0">
+                <i class="fa-solid fa-star me-2"></i>
+                Reviews by <%= userdata.username %>
+            </h3>
+
+            <span class="text-muted">
+                <%= userReviewsData.length %> reviews
+            </span>
+
+        </div>
+
+
+        <% if (userReviewsData.length === 0) { %>
+
+            <div class="text-center py-5">
+
+                <i class="fa-regular fa-star fa-3x text-muted mb-3"></i>
+
+                <h5>No Reviews Yet</h5>
+
+                <p class="text-muted">
+                    This user hasn't written any reviews.
+                </p>
+
+            </div>
+
+        <% } else { %>
+
+            <div class="row g-4">
+
+                <% userReviewsData.forEach(review => { %>
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="card border-0 shadow-sm h-100">
+
+                            <div class="card-body p-4">
+
+                                <!-- Rating -->
+
+                                <div class="mb-3">
+
+                                    <% for (let i = 1; i <= 5; i++) { %>
+
+                                        <% if (i <= review.rating) { %>
+
+                                            <i
+                                                class="fa-solid fa-star text-warning"
+                                            ></i>
+
+                                        <% } else { %>
+
+                                            <i
+                                                class="fa-regular fa-star text-warning"
+                                            ></i>
+
+                                        <% } %>
+
+                                    <% } %>
+
+                                    <span class="ms-2 text-muted">
+                                        <%= review.rating %>/5
+                                    </span>
+
+                                </div>
+
+
+                                <!-- Comment -->
+
+                                <p class="mb-3 fs-5">
+                                    "<%= review.comment %>"
+                                </p>
+
+
+                                <!-- Date -->
+
+                                <% if (review.createdAt) { %>
+
+                                    <small class="text-muted">
+
+                                        <i
+                                            class="fa-regular fa-calendar me-1"
+                                        ></i>
+
+                                        <%= new Date(review.createdAt)
+                                            .toLocaleDateString("en-IN", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric"
+                                            }) %>
+
+                                    </small>
+
+                                <% } %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </section>
+
+</div>

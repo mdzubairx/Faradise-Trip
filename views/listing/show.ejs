@@ -72,10 +72,19 @@
         
  <br>
 
-  <div >
-    <h5>Where You will be</h5>
+ <% const listingCoordinates =  ListingData.geometry && ListingData.geometry.coordinates ? 
+            ListingData.geometry.coordinates : [-80.189244, 25.761536]; %>
 
-    
+  <div class="col-8 offset-2 mb-3">
+    <h5>Where You will be</h5>
+    <div 
+      id="sdk-map" 
+      style="width: 100%; height: 400px; border-radius: 12px; margin-top: 1rem;"
+      data-api-key="<%= mapApiKey %>"
+      data-location="<%= ListingData.location %>"
+      data-country="<%= ListingData.country %>"
+      data-coordinates="<%= JSON.stringify(listingCoordinates) %>"
+    ></div>
   </div>
 
 <!-- leave a review -->
@@ -513,3 +522,4 @@ async function initializeBookingPage() {
 initializeBookingPage();
 
 </script>
+<script src="/js/listingDisplayMap.bundle.js"></script>
