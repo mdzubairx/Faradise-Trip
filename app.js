@@ -31,6 +31,7 @@ const { mybookings } = require('./controllers/mybookings.js');
 const { searchListing } = require('./controllers/search.js');
 const { webhookHandler } = require('./controllers/webhookHandler.js');
 const { renderSignUpForm , signUp , renderLoginForm , login , logout, userAccountdetails} = require('./controllers/users.js');
+const { createwishList, getWishLists, deletewishList } = require('./controllers/wishlists.js');
 const multer  = require('multer');
 const {storage} = require('./cloudCongig.js');
 const upload = multer({ storage })
@@ -177,6 +178,13 @@ app.post("/listings/:id/reviews", isLoggedin, createNewReview)
 app.delete("/listings/:id/reviews/:reviewId", isLoggedin, isReviewAuthor, deleteReview)
 
 
+
+//wishlists
+app.post("/wishlist/add", createwishList);
+
+app.delete("/wishlist/remove", deletewishList);
+
+app.get("/user/wishlists", wrapAsync(getWishLists));
 
 
 //All request for which there are no APIs created but user sends request on them

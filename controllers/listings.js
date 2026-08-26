@@ -44,7 +44,12 @@ module.exports.showListing = async(req, res)=>{
         res.redirect("/listings");    
     }
     
-    res.render("listing/show.ejs", { ListingData, mapApiKey: process.env.MAP_API });
+    let isWishlisted = false;
+    if (req.session.wishlist) {
+        isWishlisted = req.session.wishlist.some(item => item.Listingid === id);
+    }
+    
+    res.render("listing/show.ejs", { ListingData, mapApiKey: process.env.MAP_API, isWishlisted });
 }
 
 module.exports.editListingForm = async (req, res)=>{

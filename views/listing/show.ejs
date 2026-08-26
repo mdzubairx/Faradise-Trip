@@ -11,7 +11,18 @@
         <img src="<%=ListingData.image.url%>" class="card-img-top show-img" alt="Listing-img">
         <div class="card-body">
           <p class="card-text">
-          <p>Owned By <%= ListingData.owner.username %> </p> 
+
+
+            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: first baseline ;">
+                <p> Owned By <%= ListingData.owner.username %>  </p> 
+
+                <div style="display: flex; flex-direction: row; align-items: center; cursor: pointer;" id="wishlist-btn" data-wishlisted="<%= isWishlisted %>">
+                  <%- isWishlisted ? '<i class="fa-solid fa-heart" style="color: #da1249; font-size: x-large"></i> &nbsp; <span>Wishlisted!</span>' : '<i class="fa-regular fa-heart" style="font-size: x-large;"></i> &nbsp; <span>Wishlist</span>' %>
+                </div>
+            </div>
+
+
+
             <%= ListingData.description %> <br>
             &#8377;<%= ListingData.price.toLocaleString("en-In") %> <br>
             <%=  ListingData.location %> <br>
@@ -523,3 +534,15 @@ initializeBookingPage();
 
 </script>
 <script src="/js/listingDisplayMap.bundle.js"></script>
+<script>
+  const ListingData = <%- JSON.stringify({
+    id: ListingData.id,
+    title: ListingData.title,
+    description: ListingData.description,
+    price: ListingData.price,
+    location: ListingData.location,
+    country: ListingData.country,
+    image: { url: ListingData.image.url }
+  }) %>;
+</script>
+<script src="/js/wishlistScript.js" ></script>

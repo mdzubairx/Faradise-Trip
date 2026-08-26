@@ -1,0 +1,30 @@
+<% layout('/layouts/boilerPlate') %>
+<div class="container mt-4">
+    <h3 class="mb-4"><b>My Wishlist</b></h3>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+        <% if (wishlists.length === 0) { %>
+            <div class="col-12 text-center mt-5">
+                <i class="fa-regular fa-heart" style="font-size: 4rem; color: #ccc; margin-bottom: 1.5rem; display: block;"></i>
+                <h4>No wishlisted properties yet!</h4>
+                <p class="text-muted">Start exploring properties and add them to your wishlist.</p>
+                <a href="/listings" class="btn btn-dark mt-3">Explore Listings</a>
+            </div>
+        <% } else { %>
+            <% for(let listing of wishlists){ %>
+                <a href="/listings/<%= listing.Listingid %>" class="card-links">
+                    <div class="card card-listing col" style="position: relative;">
+                        <img src="<%= listing.imageurl %>" class="card-img-top" alt="listing-image" style="height: 20rem; object-fit: cover;">
+                        <i class="fa-solid fa-heart" style="color: #da1249; font-size: 1.5rem; position: absolute; top: 1rem; right: 1.5rem; z-index: 10;"></i>
+                        <div class="card-img-overlay"></div>
+                        <div class="card-body">
+                          <p class="card-text"><b> <%= listing.title %> </b></p>
+                          <p class="card-text">
+                            &#8377;<%= Number(listing.price).toLocaleString("en-In") %>/Night
+                          </p>
+                        </div>
+                    </div>
+                </a>
+            <% } %>
+        <% } %>
+    </div>
+</div>
