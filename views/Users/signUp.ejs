@@ -1,26 +1,1140 @@
 <% layout('/layouts/boilerPlate') %>
 
+<div class="signup-page">
 
-    <div class="row">
-        <h2 class="col-6 offset-2">SignUp On FaraDiseTrip</h2>
-        <div class="col-6 offset-2">
-            <form action="/signUp" method="post" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" placeholder="username" class="form-control" required>
-                </div>
-               
-                <div class="mb-3">
-                    <label for="email" class="form-label" >Email</label>
-                    <input type="email" id="email" class="form-control" name="email" placeholder="email" required>
-                </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" name="password" placeholder="password" required>
-                </div>
+<div class="signup-container">
 
-                <button class="btn btn-outline-dark mb-3">SignUp</button>
-            </form>
+
+    <!-- =================================
+         LEFT VECTOR / BRANDING SECTION
+    ================================== -->
+
+    <div class="signup-visual">
+
+        <div class="signup-vector-bg">
+
+            <!-- Decorative circles -->
+            <div class="signup-circle signup-circle-one"></div>
+            <div class="signup-circle signup-circle-two"></div>
+
+
+            <!-- Clouds -->
+
+            <div class="signup-cloud signup-cloud-one">
+                <i class="fa-solid fa-cloud"></i>
             </div>
+
+            <div class="signup-cloud signup-cloud-two">
+                <i class="fa-solid fa-cloud"></i>
+            </div>
+
+
+            <!-- Hot Air Balloon -->
+
+            <div class="hot-air-balloon">
+
+                <div class="balloon">
+                    <i class="fa-solid fa-earth-americas"></i>
+                </div>
+
+                <div class="balloon-rope"></div>
+
+            </div>
+
+
+            <!-- Travel Route -->
+
+            <svg
+                class="signup-route"
+                viewBox="0 0 500 300"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+
+                <path
+                    d="M40 245
+                       C100 210 110 150 165 165
+                       C220 180 225 235 285 215
+                       C345 195 335 110 425 70"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-dasharray="8 8"
+                    fill="none"
+                />
+
+                <circle
+                    cx="40"
+                    cy="245"
+                    r="8"
+                    fill="currentColor"
+                />
+
+                <circle
+                    cx="425"
+                    cy="70"
+                    r="8"
+                    fill="currentColor"
+                />
+
+            </svg>
+
+
+            <!-- Destination Pin -->
+
+            <div class="signup-location-pin">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+
+            <!-- Mountains -->
+
+            <div class="signup-mountains">
+
+                <div class="signup-mountain signup-mountain-one"></div>
+
+                <div class="signup-mountain signup-mountain-two"></div>
+
+                <div class="signup-mountain signup-mountain-three"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Branding Text -->
+
+        <div class="signup-visual-content">
+
+            <div class="signup-brand-icon">
+                <i class="fa-solid fa-compass"></i>
+            </div>
+
+            <h1>Start your journey</h1>
+
+            <p>
+                Create your account and start discovering
+                amazing destinations, unique stays and
+                unforgettable experiences.
+            </p>
+
+        </div>
+
     </div>
+
+
+
+    <!-- =================================
+         SIGNUP FORM SECTION
+    ================================== -->
+
+    <div class="signup-form-section">
+
+        <div class="signup-form-container">
+
+
+            <!-- Heading -->
+
+            <div class="signup-heading">
+
+                <div class="mobile-signup-icon">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+
+                <h2>Create account</h2>
+
+                <p>
+                    Join FaradiseTrip and explore the world.
+                </p>
+
+            </div>
+
+
+            <!-- Signup Form -->
+
+            <form
+                action="/signUp"
+                method="post"
+                class="needs-validation"
+                novalidate
+            >
+
+
+                <!-- Username -->
+
+                <div class="signup-input-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="signup-input-wrapper">
+
+                        <i class="fa-regular fa-user"></i>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Choose a username"
+                            required
+                            autocomplete="username"
+                        >
+
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please enter a username.
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="signup-input-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <div class="signup-input-wrapper">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        >
+
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="signup-input-group signup-password-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="signup-input-wrapper">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            required
+                            autocomplete="new-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="signup-password-toggle"
+                            id="toggleSignupPassword"
+                            aria-label="Show password"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="invalid-feedback">
+                        Please enter a password.
+                    </div>
+
+                </div>
+
+
+                <!-- Password hint -->
+
+                <div class="password-hint">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <span>
+                        Use a password that is easy for you to
+                        remember but difficult for others to guess.
+                    </span>
+
+                </div>
+
+
+                <!-- Signup Button -->
+
+                <button
+                    type="submit"
+                    class="signup-btn"
+                >
+
+                    <span>Create account</span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <!-- Divider -->
+
+            <div class="signup-divider">
+
+                <span>OR</span>
+
+            </div>
+
+
+            <!-- Login -->
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<style>
+
+/* ==========================================
+   SIGNUP PAGE
+========================================== */
+
+.signup-page {
+
+    min-height: calc(100vh - 100px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px 15px;
+
+}
+
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.signup-container {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    height: 540px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==========================================
+   LEFT VISUAL
+========================================== */
+
+.signup-visual {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #f1f5f4;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    color: #222;
+}
+
+
+/* ==========================================
+   VECTOR BACKGROUND
+========================================== */
+
+.signup-vector-bg {
+
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    color: #d3e1dd;
+}
+
+
+/* ==========================================
+   CIRCLES
+========================================== */
+
+.signup-circle {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+
+.signup-circle-one {
+
+    width: 280px;
+
+    height: 280px;
+
+    top: -110px;
+
+    right: -80px;
+}
+
+
+.signup-circle-two {
+
+    width: 190px;
+
+    height: 190px;
+
+    top: 60px;
+
+    left: -100px;
+}
+
+
+/* ==========================================
+   CLOUDS
+========================================== */
+
+.signup-cloud {
+
+    position: absolute;
+
+    color: #d0ded9;
+
+    opacity: 0.75;
+
+    font-size: 28px;
+}
+
+
+.signup-cloud-one {
+
+    top: 55px;
+
+    left: 55px;
+}
+
+
+.signup-cloud-two {
+
+    top: 125px;
+
+    right: 65px;
+
+    font-size: 22px;
+}
+
+
+/* ==========================================
+   HOT AIR BALLOON
+========================================== */
+
+.hot-air-balloon {
+
+    position: absolute;
+
+    top: 65px;
+
+    left: 145px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+.balloon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #222;
+
+    color: white;
+
+    font-size: 20px;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+.balloon-rope {
+
+    width: 1px;
+
+    height: 25px;
+
+    background: #aaa;
+}
+
+
+/* ==========================================
+   TRAVEL ROUTE
+========================================== */
+
+.signup-route {
+
+    position: absolute;
+
+    width: 100%;
+
+    height: 70%;
+
+    top: 30px;
+
+    left: 0;
+
+    color: #aebfba;
+}
+
+
+/* ==========================================
+   LOCATION PIN
+========================================== */
+
+.signup-location-pin {
+
+    position: absolute;
+
+    top: 82px;
+
+    right: 75px;
+
+    font-size: 35px;
+
+    color: #222;
+}
+
+
+/* ==========================================
+   MOUNTAINS
+========================================== */
+
+.signup-mountains {
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 135px;
+
+    overflow: hidden;
+}
+
+
+.signup-mountain {
+
+    position: absolute;
+
+    bottom: -75px;
+
+    width: 230px;
+
+    height: 180px;
+
+    transform: rotate(45deg);
+
+    background: #d9e5e1;
+}
+
+
+.signup-mountain-one {
+
+    left: -70px;
+}
+
+
+.signup-mountain-two {
+
+    left: 100px;
+
+    bottom: -90px;
+
+    background: #cbdad5;
+}
+
+
+.signup-mountain-three {
+
+    right: -80px;
+
+    bottom: -75px;
+
+    background: #e1eae7;
+}
+
+
+/* ==========================================
+   VISUAL CONTENT
+========================================== */
+
+.signup-visual-content {
+
+    position: relative;
+
+    z-index: 5;
+
+    padding: 30px 35px;
+
+    max-width: 420px;
+}
+
+
+.signup-brand-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #222;
+
+    color: white;
+
+    margin-bottom: 15px;
+
+    font-size: 18px;
+}
+
+
+.signup-visual h1 {
+
+    font-size: 31px;
+
+    font-weight: 700;
+
+    color: #222;
+
+    margin-bottom: 8px;
+}
+
+
+.signup-visual-content p {
+
+    max-width: 350px;
+
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color: #555;
+}
+
+
+/* ==========================================
+   FORM SECTION
+========================================== */
+
+.signup-form-section {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 35px;
+}
+
+
+.signup-form-container {
+
+    width: 100%;
+
+    max-width: 330px;
+}
+
+
+/* ==========================================
+   HEADING
+========================================== */
+
+.signup-heading {
+
+    margin-bottom: 22px;
+}
+
+
+.signup-heading h2 {
+
+    font-size: 27px;
+
+    font-weight: 700;
+
+    color: #222;
+
+    margin-bottom: 5px;
+}
+
+
+.signup-heading p {
+
+    font-size: 13px;
+
+    color: #777;
+
+    margin: 0;
+}
+
+
+.mobile-signup-icon {
+
+    display: none;
+}
+
+
+/* ==========================================
+   INPUT GROUP
+========================================== */
+
+.signup-input-group {
+
+    margin-bottom: 15px;
+}
+
+
+.signup-input-group label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #333;
+
+    margin-bottom: 6px;
+}
+
+
+.signup-input-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.signup-input-wrapper > i:first-child {
+
+    position: absolute;
+
+    left: 15px;
+
+    color: #999;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+.signup-input-wrapper input {
+
+    width: 100%;
+
+    height: 45px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    padding: 0 44px;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+
+.signup-input-wrapper input::placeholder {
+
+    color: #aaa;
+}
+
+
+.signup-input-wrapper input:focus {
+
+    border-color: #222;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ==========================================
+   PASSWORD TOGGLE
+========================================== */
+
+.signup-password-toggle {
+
+    position: absolute;
+
+    right: 12px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #888;
+
+    cursor: pointer;
+
+    padding: 5px;
+}
+
+
+.signup-password-toggle:hover {
+
+    color: #222;
+}
+
+
+/* ==========================================
+   PASSWORD HINT
+========================================== */
+
+.password-hint {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-top: -3px;
+
+    margin-bottom: 18px;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+
+    color: #888;
+}
+
+
+.password-hint i {
+
+    margin-top: 2px;
+
+    font-size: 11px;
+}
+
+
+/* ==========================================
+   SIGNUP BUTTON
+========================================== */
+
+.signup-btn {
+
+    width: 100%;
+
+    height: 47px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #222;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.signup-btn:hover {
+
+    background: #000;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.15);
+}
+
+
+.signup-btn:active {
+
+    transform: translateY(0);
+}
+
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.signup-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    margin: 20px 0;
+
+    color: #aaa;
+
+    font-size: 10px;
+}
+
+
+.signup-divider::before,
+.signup-divider::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #e5e5e5;
+}
+
+
+.signup-divider span {
+
+    padding: 0 12px;
+}
+
+
+/* ==========================================
+   LOGIN TEXT
+========================================== */
+
+.login-text {
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #777;
+}
+
+
+.login-text a {
+
+    color: #222;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.login-text a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .signup-page {
+
+        min-height: calc(100vh - 80px);
+
+        padding: 20px 12px;
+    }
+
+
+    .signup-container {
+
+        max-width: 450px;
+
+        height: auto;
+
+        grid-template-columns: 1fr;
+
+        border-radius: 18px;
+    }
+
+
+    .signup-visual {
+
+        display: none;
+    }
+
+
+    .signup-form-section {
+
+        padding: 35px 25px;
+    }
+
+
+    .mobile-signup-icon {
+
+        width: 42px;
+
+        height: 42px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: #f1f1f1;
+
+        margin-bottom: 15px;
+
+        font-size: 18px;
+    }
+
+
+    .signup-heading h2 {
+
+        font-size: 26px;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .signup-form-section {
+
+        padding: 30px 20px;
+    }
+
+}
+
+</style>
+
+<script>
+
+/* ==========================================
+   PASSWORD SHOW / HIDE
+========================================== */
+
+const toggleSignupPassword =
+    document.getElementById("toggleSignupPassword");
+
+const signupPassword =
+    document.getElementById("password");
+
+
+if (toggleSignupPassword && signupPassword) {
+
+    toggleSignupPassword.addEventListener(
+        "click",
+        function () {
+
+            const isPassword =
+                signupPassword.type === "password";
+
+
+            signupPassword.type =
+                isPassword ? "text" : "password";
+
+
+            this.innerHTML =
+                isPassword
+                ? '<i class="fa-regular fa-eye-slash"></i>'
+                : '<i class="fa-regular fa-eye"></i>';
+
+        }
+    );
+
+}
+
+</script>
