@@ -155,7 +155,7 @@
                         <p class="starability-result mb-2" data-rating="<%= review.rating %>"></p>
                         <p class="text-secondary mb-3" style="font-size: 0.95rem;"><%= review.comment %></p>
                     </div>
-                    <% if(currUser && (review.author._id.equals(currUser._id) || ListingData.owner._id.equals(currUser._id))){ %>
+                    <% if(currUser && (review.author._id.equals(currUser._id))){ %>
                     <form method="post" action="/listings/<%=ListingData.id%>/reviews/<%= review.id %>?_method=DELETE">
                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3">Delete</button>
                     </form>
