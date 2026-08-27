@@ -1,15 +1,291 @@
-<footer>
-    <div class="f-info">
-        <div class="f-icons">
-            <i class="fa-brands fa-facebook"></i>
+<footer class="site-footer">
+
+<div class="footer-container">
+
+    <!-- Social Icons -->
+    <div class="footer-social">
+
+        <a href="#" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#" aria-label="Instagram">
             <i class="fa-brands fa-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
-            <i class="fa-brands fa-twitter"></i>
-        </div>
-        <div class="f-info-brand">	&#169; FaradiseTrip Private limited</div>
-        <div class="f-info-links">
-            <a href="/">Privacy</a>
-            <a href="/">terms</a>
-        </div>
+        </a>
+
+        <a href="#" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+
+        <a href="#" aria-label="Twitter">
+            <i class="fa-brands fa-x-twitter"></i>
+        </a>
+
     </div>
+
+
+    <!-- Brand -->
+    <div class="footer-brand">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <span>
+            © <%= new Date().getFullYear() %>
+            FaradiseTrip Private Limited
+        </span>
+
+    </div>
+
+
+    <!-- Links -->
+    <div class="footer-links">
+
+        <a href="/">
+            Privacy
+        </a>
+
+        <span class="footer-separator">•</span>
+
+        <a href="/">
+            Terms
+        </a>
+
+    </div>
+
+</div>
+
+
 </footer>
+
+<style>
+
+/* =====================================
+   FOOTER
+===================================== */
+
+.site-footer {
+
+    width: 100%;
+
+    background: #f7f7f7e1;
+
+    border-top: 1px solid #eeeeee;
+
+    margin-top: 40px;
+}
+
+
+/* =====================================
+   FOOTER CONTAINER
+===================================== */
+
+.footer-container {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    min-height: 100px;
+
+    padding: 22px 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+
+/* =====================================
+   SOCIAL ICONS
+===================================== */
+
+.footer-social {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.footer-social a {
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f5f5f5;
+
+    color: #333;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.footer-social a:hover {
+
+    background: #222;
+
+    color: #ffffff;
+
+    transform: translateY(-3px);
+}
+
+
+/* =====================================
+   BRAND
+===================================== */
+
+.footer-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: #555;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.footer-brand i {
+
+    font-size: 14px;
+
+    color: #222;
+}
+
+
+/* =====================================
+   LINKS
+===================================== */
+
+.footer-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 13px;
+}
+
+
+.footer-links a {
+
+    color: #555;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.footer-links a:hover {
+
+    color: #000;
+
+    text-decoration: underline;
+}
+
+
+.footer-separator {
+
+    color: #bbb;
+
+    font-size: 10px;
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 768px) {
+
+    .footer-container {
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        text-align: center;
+
+        gap: 14px;
+
+        padding: 25px 15px;
+    }
+
+
+    .footer-social {
+
+        order: 1;
+    }
+
+
+    .footer-brand {
+
+        order: 2;
+    }
+
+
+    .footer-links {
+
+        order: 3;
+    }
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+    .footer-brand {
+
+        font-size: 12px;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+
+    .footer-links {
+
+        font-size: 12px;
+    }
+
+}
+
+</style>
