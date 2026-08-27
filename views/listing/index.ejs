@@ -120,8 +120,8 @@
                 <div class="card-img-overlay"></div>
                 <div class="card-body">
                   <p class="card-text"><b> <%= listing.title %> </b> <br>
-                    &#8377;<%= listing.price.toLocaleString("en-In") %>/Night
-                    <i class="tax-info">&nbsp; &nbsp; + 18% GST</i>
+                    <span class="price-display" data-base-price="<%= listing.price %>">&#8377;<%= listing.price.toLocaleString("en-IN") %></span> / Night
+                    <i class="tax-info" style="font-size: 12px; color: rgb(101, 101, 101);">&nbsp; (18% GST Incl)</i>
                 </p>
                 </div>
             </div>
@@ -132,15 +132,20 @@
 
     <script>
         let toggleBtn = document.getElementById("flexSwitchCheckDefault");
-        toggleBtn.addEventListener("click", ()=>{
-        let taxinfo = document.getElementsByClassName('tax-info');
-        for(info of taxinfo){
-            if( info.style.display !== "inline"){
-                info.style.display = "inline";
-            }else{
-                info.style.display = "none";
+        toggleBtn.addEventListener("change", ()=>{
+            let priceDisplays = document.getElementsByClassName('price-display');
+            let taxinfo = document.getElementsByClassName('tax-info');
+
+            for (let i = 0; i < priceDisplays.length; i++) {
+                let basePrice = Number(priceDisplays[i].getAttribute("data-base-price"));
+                if (toggleBtn.checked) {
+                    let priceWithTax = Math.round(basePrice * 1.18);
+                    priceDisplays[i].innerHTML = `&#8377;${priceWithTax.toLocaleString("en-IN")}`;
+                    if (taxinfo[i]) taxinfo[i].style.display = "inline";
+                } else {
+                    priceDisplays[i].innerHTML = `&#8377;${basePrice.toLocaleString("en-IN")}`;
+                    if (taxinfo[i]) taxinfo[i].style.display = "none";
+                }
             }
-           
-        }
-        })
+        });
     </script>

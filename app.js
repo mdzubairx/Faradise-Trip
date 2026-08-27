@@ -21,7 +21,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./Models/user.js');
-const {isLoggedin, isLoggedinForCreateBooking} = require('./middleware.js');
+const {isLoggedin, isLoggedinAndRedirectToPreviousPage} = require('./middleware.js');
 const { register } = require('module');
 const {savedRedirectPage, isOwner , validateListing , isReviewAuthor} = require('./middleware.js');
 const { index , renderNewListingsForm , createNewListing , showListing , editListingForm , editListingRequest, deleteListing} = require('./controllers/listings.js');
@@ -157,7 +157,7 @@ app.get("/search-listings", wrapAsync(searchListing));
 
 
 //Bookings API
-app.post("/listings/:id/book", isLoggedinForCreateBooking , wrapAsync(createBooking) )
+app.post("/listings/:id/book", isLoggedinAndRedirectToPreviousPage , wrapAsync(createBooking) )
 
 
 app.get("/listings/:id/booked-days", wrapAsync(getBookedDays) );
@@ -172,7 +172,7 @@ app.post("/booking-payment/webhook",  webhookHandler)
 app.get("/my-bookings", isLoggedin , wrapAsync(mybookings));
 
 //reviews Section 
-app.post("/listings/:id/reviews", isLoggedin, createNewReview)
+app.post("/listings/:id/reviews", isLoggedinAndRedirectToPreviousPage, createNewReview)
 
 //reviews delete api
 app.delete("/listings/:id/reviews/:reviewId", isLoggedin, isReviewAuthor, deleteReview)

@@ -109,7 +109,6 @@
     </div>
 
     <!-- Leave a Review Section -->
-    <% if(currUser){ %>
     <div class="reviews-wrapper-card">
         <h4 class="section-title"><i class="fa-regular fa-comment-dots text-primary me-2"></i>Leave a Review</h4>
         <form action="/listings/<%=ListingData.id%>/reviews" method="post" novalidate class="needs-validation">
@@ -139,7 +138,6 @@
             <button class="btn btn-dark rounded-pill px-4 fw-bold">Submit Review</button>
         </form>
     </div>
-    <% } %>
 
     <!-- All Reviews Section -->
     <% if(ListingData.reviews && ListingData.reviews.length > 0) { %>
