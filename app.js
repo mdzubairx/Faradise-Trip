@@ -21,7 +21,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./Models/user.js');
-const {isLoggedin} = require('./middleware.js');
+const {isLoggedin, isLoggedinForCreateBooking} = require('./middleware.js');
 const { register } = require('module');
 const {savedRedirectPage, isOwner , validateListing , isReviewAuthor} = require('./middleware.js');
 const { index , renderNewListingsForm , createNewListing , showListing , editListingForm , editListingRequest, deleteListing} = require('./controllers/listings.js');
@@ -157,12 +157,12 @@ app.get("/search-listings", wrapAsync(searchListing));
 
 
 //Bookings API
-app.post("/listings/:id/book", isLoggedin, wrapAsync(createBooking) )
+app.post("/listings/:id/book", isLoggedinForCreateBooking , wrapAsync(createBooking) )
 
 
 app.get("/listings/:id/booked-days", wrapAsync(getBookedDays) );
 
-app.post("/verify-payment/booking/:id", isLoggedin, verifyPayments )
+app.post("/verify-payment/booking/:id", verifyPayments )
 
 
 app.post("/booking-payment/webhook",  webhookHandler)

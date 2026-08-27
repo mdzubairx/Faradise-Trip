@@ -14,6 +14,16 @@ module.exports.isLoggedin = (req, res, next)=>{
     next();
 }
 
+module.exports.isLoggedinForCreateBooking = (req, res, next)=>{
+    if(!req.isAuthenticated()){
+        req.session.redirectUrl = req.headers.referer || req.originalUrl;
+        req.flash("error", "You are not logged in");
+       return res.redirect("/login");
+    }
+    next();
+}
+
+
 module.exports.savedRedirectPage =(req, res , next)=>{
     if(req.session.redirectUrl){
         res.locals.redirectUrl = req.session.redirectUrl;
