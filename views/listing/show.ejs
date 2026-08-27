@@ -29,7 +29,17 @@
 
         <div class="show-info-body">
             <p class="show-description-text"><%= ListingData.description %></p>
-            
+
+            <div class="show-location-badge">
+                <i class="fa-solid fa-location-dot" style="color: #00b3ff;"></i>
+                <span><%= ListingData.location %> </span>
+            </div>
+
+            <div class="show-location-badge">
+                <i class="fa-solid fa-flag" style="color: #00b3ff;"></i>
+                <span> Country: <%= ListingData.country %></span>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div class="price-highlight-badge">
                     &#8377;<%= ListingData.price.toLocaleString("en-IN") %> <small style="font-size: 0.8rem; font-weight: 500; opacity: 0.9;">/ night</small>
