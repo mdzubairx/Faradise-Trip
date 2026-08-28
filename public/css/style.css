@@ -686,7 +686,65 @@ body{
     box-shadow: 0 10px 25px rgba(218, 18, 73, 0.4);
 }
 
+.btn-book-now:disabled {
+    background: #b0b0b0;
+    color: #e8e8e8;
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    pointer-events: auto;
+}
+
+.btn-book-now:disabled:hover {
+    background: #b0b0b0;
+    color: #e8e8e8;
+    transform: none;
+    box-shadow: none;
+}
+.book-now-wrapper {
+    position: relative;
+}
+
+.book-now-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: normal;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Arrow pointing down */
+.book-now-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1a1a2e;
+}
+
+/* Show tooltip only when the button is disabled and wrapper is hovered */
+.book-now-wrapper:has(#bookNowBtn:disabled):hover .book-now-tooltip {
+    display: block;
+}
+
 .map-card-wrapper {
+
     background: #ffffff;
     border-radius: 20px;
     border: 1px solid #edf2f7;

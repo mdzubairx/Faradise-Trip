@@ -99,7 +99,10 @@
                     </div>
                 </div>
 
-                <button class="btn-book-now" id="bookNowBtn"><i class="fa-solid fa-bolt me-2"></i>Book Now</button>
+                <div class="book-now-wrapper">
+                  <button class="btn-book-now" id="bookNowBtn"><i class="fa-solid fa-bolt me-2"></i>Book Now</button>
+                  <span class="book-now-tooltip">You have a pending booking. Please review or close it before proceeding.</span>
+                </div>
             </div>
         </div>
     </div>
@@ -278,7 +281,12 @@ async function initializeBookingPage() {
   let bookNowBtn = document.getElementById('bookNowBtn');
 
   bookNowBtn.addEventListener('click', async function() {
-      if (bookNowBtn.disabled || document.querySelector('.booking-confirmation-card')) {
+      if (document.querySelector('.booking-confirmation-card')) {
+          alert("A booking confirmation is already open. Please review or close it before proceeding.");
+          return;
+      }
+      if (bookNowBtn.disabled) {
+          alert("Your booking is already being processed. Please wait.");
           return;
       }
 
@@ -298,6 +306,53 @@ async function initializeBookingPage() {
       let guestsDiv = document.getElementById('guestsValue');
       const guestsCount = Number(guestsDiv.innerText);
 
+      // Show loading overlay while the booking API is in-flight
+      const bookingLoadingOverlay = document.createElement('div');
+      bookingLoadingOverlay.id = 'bookingLoadingOverlay';
+      bookingLoadingOverlay.innerHTML = `
+        <div style="
+          position: fixed;
+          inset: 0;
+          background: rgba(10, 10, 20, 0.55);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 99999;
+        ">
+          <div style="
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+          ">
+            <div style="
+              width: 52px;
+              height: 52px;
+              border: 4px solid rgba(218, 18, 73, 0.15);
+              border-top: 4px solid #da1249;
+              border-radius: 50%;
+              animation: bookingSpinAnim 0.85s linear infinite;
+            "></div>
+            <h4 style="color: #111; margin: 0; font-weight: 700; font-size: 17px; font-family: system-ui, -apple-system, sans-serif;">Setting up your booking…</h4>
+            <p style="color: #777; margin: 0; font-size: 13px; font-family: system-ui, -apple-system, sans-serif;">Please wait a moment.</p>
+          </div>
+          <style>
+            @keyframes bookingSpinAnim {
+              0%   { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </div>
+      `;
+      document.body.appendChild(bookingLoadingOverlay);
+
       try {
         const response = await axios.post(`/listings/<%=ListingData.id%>/book`, {
           startDate: date1,
@@ -305,6 +360,10 @@ async function initializeBookingPage() {
           totalPrice : listingPrice * (noOfDays + 1) * guestsCount,
           guests : guestsCount
         });
+
+        // Remove loading overlay once API responds
+        const _blo = document.getElementById('bookingLoadingOverlay');
+        if (_blo) _blo.remove();
 
         // Check if user was not logged in and backend returned login page redirect
         if ((typeof response.data === 'string' && (response.data.includes('login') || response.data.includes('Login'))) || 
@@ -503,6 +562,9 @@ async function initializeBookingPage() {
 
       } catch(error){
         console.error(error);
+        // Remove loading overlay on error
+        const _blo = document.getElementById('bookingLoadingOverlay');
+        if (_blo) _blo.remove();
         bookNowBtn.disabled = false;
 
         // If unauthenticated error
