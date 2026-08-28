@@ -14,7 +14,7 @@
 
     <!-- Main Hero Card -->
     <div class="show-hero-card">
-        <img src="<%=ListingData.image.url%>" class="show-hero-img" alt="<%= ListingData.title %>">
+        <img src="<%=ListingData.image.url%>" class="show-hero-img" alt="<%= ListingData.title %>" id="heroImg" onclick="openLightbox(this.src, this.alt)">
         
         <div class="show-host-bar">
             <div class="host-pill">
@@ -180,6 +180,37 @@
     </div>
     <% } %>
 </div>
+
+<!-- Lightbox Modal -->
+<div id="imageLightbox" class="lightbox-overlay" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="" class="lightbox-img">
+    <p id="lightboxCaption" class="lightbox-caption"></p>
+  </div>
+</div>
+
+<script>
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('imageLightbox');
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxCaption').textContent = alt;
+    lb.classList.add('lightbox-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(event) {
+    // Close on overlay click (not on the image/inner itself) or close button
+    if (event && event.target.closest('.lightbox-inner')) return;
+    const lb = document.getElementById('imageLightbox');
+    lb.classList.remove('lightbox-open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 <script>
   const listingPrice = JSON.parse('<%- JSON.stringify(ListingData.price) %>');
